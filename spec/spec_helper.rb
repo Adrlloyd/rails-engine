@@ -1,6 +1,6 @@
-equire 'simplecov'
+require 'simplecov'
 SimpleCov.start 'rails'
-SimpleCov.add_filter ['spec', 'config']
+SimpleCov.add_filter ['spec', 'config', 'application_cable', 'application_job', 'application_mailer']
 
 RSpec.configure do |config|
  
