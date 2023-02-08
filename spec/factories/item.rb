@@ -3,6 +3,6 @@ FactoryBot.define do
     name { Faker::Commerce.product_name }
     description { Faker::Coffee.notes }
     unit_price { Faker::Commerce.price }
-    merchant
+    # merchant_id
   end
 end
