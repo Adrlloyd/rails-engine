@@ -17,6 +17,7 @@ group :development, :test do
   gem 'faker'
   gem 'pry-rails'
   gem 'pry'
+  gem 'shoulda-matchers'
 end
 
 group :development do
