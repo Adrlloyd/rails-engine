@@ -28,4 +28,27 @@ RSpec.describe "merchants API" do
     expect(merchant[:data][:attributes]).to have_key(:name)
     expect(merchant[:data][:attributes][:name]).to be_a(String)
   end
+
+  it 'returns a merchant from a search' do
+    create_list(:merchant, 2)
+    create(:merchant, name: "Schiller, Barrows and Parker")
+
+    get "/api/v1/merchants/find?name=iLl"
+    expect(response).to be_successful
+
+    merchants = JSON.parse(response.body, symbolize_names: true)
+    expect(merchants.count).to eq(1)
+
+    expect(merchants[:data][:attributes]).to have_key(:name)
+    expect(merchants[:data][:attributes][:name]).to eq("Schiller, Barrows and Parker")
+  end
+
+  it 'returns an error if no merchant found' do
+    create_list(:merchant, 2)
+    
+    get "/api/v1/merchants/find?name=xxxxx"
+    result = JSON.parse(response.body, symbolize_names: true)[:data]
+    
+    expect(result[:error]).to eq("No merchant found")
+  end
 end
