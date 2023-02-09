@@ -12,8 +12,11 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def update
-    Item.update(params[:id], item_params).save 
+    if Item.update(params[:id], item_params).save 
       render json: ItemSerializer.new(Item.update(params[:id], item_params))
+    else
+      render status: 404
+    end
   end
 
   def destroy
@@ -27,7 +30,7 @@ class Api::V1::ItemsController < ApplicationController
       search = params[:name]
       found = Item.find_all(search)
       if search.nil?
-        render json: { data: {error: "No item found"} }, status: 400
+        render json: { data: {errors: "No item found"} }, status: 400
       else 
         render json: ItemSerializer.new(found)
       end
@@ -42,7 +45,7 @@ class Api::V1::ItemsController < ApplicationController
     price = params[:min_price].to_f
     found = Item.min_price(price)
     if price <= 0
-      render json: { error: 'price cant be zero'},  status: 400
+      render json: { errors: 'price cant be zero'},  status: 400
     else
       render json: ItemSerializer.new(found)
     end
@@ -52,7 +55,7 @@ class Api::V1::ItemsController < ApplicationController
     price = params[:min_price].to_f
     found = Item.max_price(price)
     if price <= 0
-      render json: { error: 'price cant be zero'},  status: 400
+      render json: { errors: 'price cant be zero'},  status: 400
     else
       render json: ItemSerializer.new(found)
     end

@@ -76,6 +76,17 @@ RSpec.describe "Items API" do
     expect(item.name).to eq("Pokemon Cards")
   end
 
+  it 'bad merchant id wont allow item update' do
+    original_item = create(:item, merchant_id: @merchant1.id)
+    updated_params = { "merchant_id": 90814097189273 }
+
+    headers = {"CONTENT_TYPE" => "application/json"}
+
+    patch "/api/v1/items/#{original_item.id}", headers: headers, params: JSON.generate(item: updated_params)
+    
+    expect(response.status).to eq(404)
+  end 
+
   it 'can destroy an item' do
     item = create(:item, merchant_id: @merchant1.id)
     
