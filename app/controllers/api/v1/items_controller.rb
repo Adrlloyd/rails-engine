@@ -19,6 +19,18 @@ class Api::V1::ItemsController < ApplicationController
   def destroy
     Item.destroy(params[:id])
   end
+
+  def find_all
+    if params[:name]
+      search = params[:name]
+      found = Item.find_all(search)
+      if search.nil?
+        render json: { data: {error: "No item found"} }
+      else 
+        render json: ItemSerializer.new(found)
+      end
+    end
+  end
   
   private
 
