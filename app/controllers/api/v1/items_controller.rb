@@ -20,7 +20,9 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def destroy
-    Item.destroy(params[:id])
+    item = Item.destroy(params[:id])
+    item.delete_invoice
+    item.destroy
   end
 
   def find_all
